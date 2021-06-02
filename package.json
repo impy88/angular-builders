@@ -1,0 +1,53 @@
+{
+  "name": "@impy88/angular-builders",
+  "version": "11.0.0",
+  "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
+  "main": "dist/builder.js",
+  "module": "dist/builder.js",
+  "author": "Maxim Kotelnikov <mail@maximkotelnikov.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/impy88/angular-builders/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/impy88/angular-builders.git"
+  },
+  "homepage": "https://github.com/impy88/angular-builders#readme",
+
+  "scripts": {
+    "build": "npm run build:schema && tsc -p tsconfig.json",
+    "build:schema": "json2ts lib/schema.json -o ./lib/schema.ts",
+    "prebuild": "rimraf dist"
+  },
+  "builders": "builders.json",
+
+  "peerDependencies": {
+    "@angular-devkit/architect": ">0.1100",
+    "ng-packagr": ">=11",
+    "rxjs": ">=6"
+  },
+
+  "dependencies": {
+    "rollup-plugin-auto-entry": ">=1.0.4",
+    "@angular-devkit/architect": ">=0.1100.0 < 0.1200.0",
+    "@angular-devkit/core": "^11.0.0",
+    "ora": "~5.4.0"
+  },
+
+  "devDependencies": {
+    "@angular/compiler": "~11.0.0",
+    "@angular/compiler-cli": "~11.0.0",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "json-schema-to-typescript": "^10.1.4",
+    "ng-packagr": "^11.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "~2.50.5",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "rxjs": "~6.6.3",
+    "tslib": "^2.0.0",
+    "typescript": "~4.0.0"
+  }
+}

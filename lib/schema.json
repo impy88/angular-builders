@@ -1,0 +1,30 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "NgPackagr builder options",
+    "description": "Is hard to describe, but instantly recognizable when spotted.",
+    "type": "object",
+    "properties": {
+      "project": {
+        "type": "string",
+        "description": "The file path for the ng-packagr configuration file, relative to the current workspace."
+      },
+      "entries": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Glob pattern for auto FESM entrypoint creation"
+      },
+      "tsConfig": {
+        "type": "string",
+        "description": "The full path for the TypeScript configuration file, relative to the current workspace."
+      },
+      "watch": {
+        "type": "boolean",
+        "description": "Run build when files change.",
+        "default": false
+      }
+    },
+    "additionalProperties": false,
+    "required": ["project"]
+  }

@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "packages",
+  "projects": {
+    "sample-lib": {
+      "projectType": "library",
+      "root": "packages/sample-lib",
+      "sourceRoot": "packages/sample-lib",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@otter/packagr:ng-packagr",
+          "options": {
+            "tsConfig": "packages/sample-lib/tsconfig.lib.json",
+            "project": "packages/sample-lib/ng-package.json",
+            "entries": ["**/index.js"]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/@angular-devkit/architect/src/builders-schema.json",
+  "builders": {
+    "ng-packagr": {
+      "implementation": "./dist",
+      "schema": "./dist/schema.json",
+      "description": "Build library with ngpackager tweaked with custom FESM module"
+    }
+  }
+}

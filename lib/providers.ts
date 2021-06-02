@@ -115,9 +115,11 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
 export const providers = (options: NgPackagrBuilderOptions) => ([
   {
     provide: WRITE_BUNDLES_TRANSFORM_TOKEN,
-    useFactory: () => pipe(
-      writeBundlesTransform,
-      overlayTranform(options),
-    )
+    useFactory: function() {
+      return pipe(
+        writeBundlesTransform,
+        overlayTranform(options),
+      )
+    },
   },
 ]);

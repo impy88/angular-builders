@@ -1,6 +1,6 @@
 {
-  "name": "@impy88/angular-builders",
-  "version": "11.0.0",
+  "name": "custom-angular-builders",
+  "version": "11.0.1",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -34,6 +34,12 @@
     "@angular-devkit/core": "^11.0.0",
     "ora": "~5.4.0"
   },
+
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
 
   "devDependencies": {
     "@angular/compiler": "~11.0.0",

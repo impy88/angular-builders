@@ -1,5 +1,5 @@
 {
-  "name": "@impy88/angular-builders",
+  "name": "custom-angular-builders",
   "version": "11.0.0",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",

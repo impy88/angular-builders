@@ -7,7 +7,7 @@ import { WRITE_BUNDLES_TRANSFORM_TOKEN } from 'ng-packagr/lib/ng-package/entry-p
 import { writeBundlesTransform } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.transform';
 import { Transform, transformFromPromise } from 'ng-packagr/lib/graph/transform';
 import { DependencyList, ExternalModuleIdStrategy } from 'ng-packagr/lib/flatten/external-module-id-strategy';
-import { isEntryPoint } from 'ng-packagr/lib/ng-package/nodes';
+import { EntryPointNode, isEntryPoint, isEntryPointInProgress } from 'ng-packagr/lib/ng-package/nodes';
 import { pipe } from 'rxjs';
 
 import { rollup } from 'rollup'
@@ -48,66 +48,63 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
   });
 
 
-  for (const entry of graph.filter(isEntryPoint)) {
-    const cache = entry.cache;
+  const entry: EntryPointNode = graph.find(isEntryPointInProgress());
+  const cache = entry.cache;
+  const { entryPoint: ngEntryPoint } = entry.data;
+
+  try {
+    spinner.start('Reshuffling FESM2015');
+
+    const bundle = await rollup({
+      context: 'this',
+      input: entry.data.destinationFiles.esm2015,
+      external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
+      cache: cache.rollupFESMCache,
+      plugins: [
+        // @ts-ignore
+        nodeResolve(),
+
+        // @ts-ignore
+        autoEntry({
+          include: options.entries,
+        }),
+        // @ts-ignore
+        rollupJson(),
+        // @ts-ignore
+        nodeResolve(),
+        // @ts-ignore
+        commonJs(),
+        // @ts-ignore
+        sourcemaps(),
+
+      ],
+      inlineDynamicImports: false,
+      preserveSymlinks: true,
+      treeshake: false,
+    })
+
+    cache.rollupFESMCache = bundle.cache;
+
+    bundle.write({
+      name: ngEntryPoint.moduleId,
+      dir: ngEntryPoint.destinationPath,
+      banner: '',
+      format: 'es',
+      sourcemap: true
+    })
 
 
-    const { entryPoint: ngEntryPoint } = entry.data;
+    const content = `export * from '../${path.basename(entry.data.destinationFiles.fesm2015)}';`
+    await fs.writeFile(entry.data.destinationFiles.fesm2015, content);
 
-    try {
+    spinner.succeed();
 
-      spinner.start('Reshuffling FESM2015');
-
-      const bundle = await rollup({
-        context: 'this',
-        input: entry.data.destinationFiles.esm2015,
-        external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
-        cache: cache.rollupFESMCache,
-        plugins: [
-          // @ts-ignore
-          nodeResolve(),
-
-          // @ts-ignore
-          autoEntry({
-            include: options.entries,
-          }),
-          // @ts-ignore
-          rollupJson(),
-          // @ts-ignore
-          nodeResolve(),
-          // @ts-ignore
-          commonJs(),
-          // @ts-ignore
-          sourcemaps(),
-
-        ],
-        inlineDynamicImports: false,
-        preserveSymlinks: true,
-        treeshake: false,
-      })
-
-      cache.rollupFESMCache = bundle.cache;
-
-      bundle.write({
-        name: ngEntryPoint.moduleId,
-        dir: ngEntryPoint.destinationPath,
-        banner: '',
-        format: 'es',
-        sourcemap: true
-      })
-
-
-      const content = `export * from '../${path.basename(entry.data.destinationFiles.fesm2015)}';`
-      await fs.writeFile(entry.data.destinationFiles.fesm2015, content);
-
-      spinner.succeed();
-
-      await bundle.close()
-    } catch (error) {
-      spinner.fail();
-      throw error;
-    }
+    await bundle.close()
+  } catch (error) {
+    spinner.fail();
+    throw error;
   }
+
 
 });
 

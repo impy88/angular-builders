@@ -15,7 +15,6 @@
     "sourceMap": true,
     "inlineSourceMap": false,
     "inlineSources": true,
-    "strict": true,
     "target": "es2018",
     "lib": [
       "es2018"

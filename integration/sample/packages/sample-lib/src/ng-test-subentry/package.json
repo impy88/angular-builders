@@ -1,0 +1,9 @@
+{
+  "ngPackage": {
+    "dest": "./",
+    "lib": {
+      "entryFile": "index.ts"
+    }
+  },
+  "sideEffects": false
+}

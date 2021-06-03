@@ -57,7 +57,7 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
 
     const bundle = await rollup({
       context: 'this',
-      input: entry.data.destinationFiles.esm2015,
+      input: ngEntryPoint.destinationFiles.esm2015,
       external: moduleId => externalModuleIdStrategy.isExternalDependency(moduleId),
       cache: cache.rollupFESMCache,
       plugins: [
@@ -91,10 +91,19 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       banner: '',
       format: 'es',
       sourcemap: true
-    })
+    });
 
+    const pathToNewEntry = path.join(
+      // Relative path to a new entry
+      path.relative(
+        path.dirname(ngEntryPoint.destinationFiles.fesm2015),
+        ngEntryPoint.destinationPath
+      ),
+      // Filename to remap
+      path.basename(ngEntryPoint.destinationFiles.fesm2015)
+    );
 
-    const content = `export * from '../${path.basename(entry.data.destinationFiles.fesm2015)}';`
+    const content = `export * from '${pathToNewEntry}';`
     await fs.writeFile(entry.data.destinationFiles.fesm2015, content);
 
     spinner.succeed();

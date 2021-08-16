@@ -2,6 +2,7 @@
   "compilerOptions": {
     "outDir": "./dist",
     "rootDir": "./lib",
+    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,

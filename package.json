@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "12.0.0",
+  "version": "12.0.1",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -31,6 +31,11 @@
 
   "dependencies": {
     "rollup-plugin-auto-entry": ">=1.0.4",
+    "rollup-plugin-sourcemaps": "^0.6.3",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "injection-js": "^2.3.0",
     "ora": "~5.4.0"
   },
 
@@ -43,17 +48,12 @@
 
   "devDependencies": {
     "@angular-devkit/architect": "~0.1202.0",
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
     "@angular-devkit/core": "^12.2.0",
     "@angular/compiler": "~12.2.0",
     "@angular/compiler-cli": "~12.2.0",
     "json-schema-to-typescript": "^10.1.4",
-    "injection-js": "^2.3.0",
     "ng-packagr": "^12.2.0",
     "rollup": "~2.50.5",
-    "rollup-plugin-sourcemaps": "^0.6.3",
     "rimraf": "^3.0.2",
     "rxjs": "~6.6.3",
     "tslib": "^2.0.0",

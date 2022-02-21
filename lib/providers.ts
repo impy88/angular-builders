@@ -2,7 +2,6 @@ import { default as ora } from 'ora';
 
 import { promises as fs } from 'fs';
 import * as path from 'path';
-import * as rollup2 from 'rollup';
 import { WRITE_BUNDLES_TRANSFORM_TOKEN } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.di';
 import { writeBundlesTransform } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.transform';
 import { Transform, transformFromPromise } from 'ng-packagr/lib/graph/transform';
@@ -46,15 +45,16 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
   const entry: EntryPointNode = graph.find(isEntryPointInProgress());
   const cache = entry.cache;
   const { entryPoint: ngEntryPoint } = entry.data;
+  const { esm2020 } = ngEntryPoint.destinationFiles;
 
   try {
     spinner.start('Reshuffling FESM2015');
 
     const bundle = await rollup({
       context: 'this',
-      input: ngEntryPoint.destinationFiles.esm2015,
-      external: moduleId => isExternalDependency(moduleId, "esm"),
-      cache: cache.rollupFESMCache,
+      input: esm2020,
+      external: moduleId => isExternalDependency(moduleId),
+      cache: cache.rollupFESM2015Cache,
       plugins: [
         // @ts-ignore
         nodeResolve(),
@@ -78,7 +78,9 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       treeshake: false,
     })
 
-    cache.rollupFESMCache = bundle.cache;
+    if (options.watch) {
+      cache.rollupFESM2015Cache = bundle.cache;
+    }
 
     bundle.write({
       name: ngEntryPoint.moduleId,
@@ -109,18 +111,77 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
     throw error;
   }
 
+  try {
+    spinner.start('Reshuffling FESM2020');
+
+    const bundle = await rollup({
+      context: 'this',
+      input: esm2020,
+      external: moduleId => isExternalDependency(moduleId),
+      cache: cache.rollupFESM2020Cache,
+      plugins: [
+        // @ts-ignore
+        nodeResolve(),
+
+        // @ts-ignore
+        autoEntry({
+          include: options.entries,
+        }),
+        // @ts-ignore
+        rollupJson(),
+        // @ts-ignore
+        nodeResolve(),
+        // @ts-ignore
+        commonJs(),
+        // @ts-ignore
+        sourcemaps(),
+
+      ],
+      inlineDynamicImports: false,
+      preserveSymlinks: true,
+      treeshake: false,
+    })
+
+    if (options.watch) {
+      cache.rollupFESM2020Cache = bundle.cache;
+    }
+
+    bundle.write({
+      name: ngEntryPoint.moduleId,
+      dir: ngEntryPoint.destinationPath,
+      banner: '',
+      format: 'es',
+      sourcemap: true
+    });
+
+    const pathToNewEntry = path.join(
+      // Relative path to a new entry
+      path.relative(
+        path.dirname(ngEntryPoint.destinationFiles.fesm2020),
+        ngEntryPoint.destinationPath
+      ),
+      // Filename to remap
+      path.basename(ngEntryPoint.destinationFiles.fesm2020)
+    );
+
+    const content = `export * from '${pathToNewEntry.replace("\\", "/")}';`;
+    await fs.writeFile(entry.data.destinationFiles.fesm2020, content);
+
+    spinner.succeed();
+
+    await bundle.close()
+  } catch (error) {
+    spinner.fail();
+    throw error;
+  }
 
 });
 
-function isExternalDependency(moduleId: string, format: rollup2.ModuleFormat): boolean {
+function isExternalDependency(moduleId: string): boolean {
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
   if (path.isAbsolute(moduleId) || moduleId.startsWith('.') || moduleId.startsWith('/')) {
     // if it's either 'absolute', marked to embed, starts with a '.' or '/' or is the umd bundle and is tslib
-    return false;
-  }
-
-  if (format === 'umd' && moduleId.startsWith('tslib')) {
     return false;
   }
 

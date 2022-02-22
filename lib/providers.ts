@@ -6,6 +6,8 @@ import { WRITE_BUNDLES_TRANSFORM_TOKEN } from 'ng-packagr/lib/ng-package/entry-p
 import { writeBundlesTransform } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.transform';
 import { Transform, transformFromPromise } from 'ng-packagr/lib/graph/transform';
 import { EntryPointNode, isEntryPoint, isEntryPointInProgress } from 'ng-packagr/lib/ng-package/nodes';
+import * as log from 'ng-packagr/lib/utils/log';
+
 import { pipe } from 'rxjs';
 
 import { rollup } from 'rollup'
@@ -58,15 +60,12 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       plugins: [
         // @ts-ignore
         nodeResolve(),
-
         // @ts-ignore
         autoEntry({
           include: options.entries,
         }),
         // @ts-ignore
         rollupJson(),
-        // @ts-ignore
-        nodeResolve(),
         // @ts-ignore
         commonJs(),
         // @ts-ignore
@@ -76,6 +75,17 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       inlineDynamicImports: false,
       preserveSymlinks: true,
       treeshake: false,
+      onwarn: warning => {
+        switch (warning.code) {
+          case 'UNUSED_EXTERNAL_IMPORT':
+          case 'THIS_IS_UNDEFINED':
+            break;
+
+          default:
+            log.warn(warning.message);
+            break;
+        }
+      },
     })
 
     if (options.watch) {
@@ -122,7 +132,6 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       plugins: [
         // @ts-ignore
         nodeResolve(),
-
         // @ts-ignore
         autoEntry({
           include: options.entries,
@@ -130,13 +139,22 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         // @ts-ignore
         rollupJson(),
         // @ts-ignore
-        nodeResolve(),
-        // @ts-ignore
         commonJs(),
         // @ts-ignore
         sourcemaps(),
 
       ],
+      onwarn: warning => {
+        switch (warning.code) {
+          case 'UNUSED_EXTERNAL_IMPORT':
+          case 'THIS_IS_UNDEFINED':
+            break;
+
+          default:
+            log.warn(warning.message);
+            break;
+        }
+      },
       inlineDynamicImports: false,
       preserveSymlinks: true,
       treeshake: false,

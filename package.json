@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "13.2.0",
+  "version": "13.2.1",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -30,7 +30,7 @@
   },
 
   "dependencies": {
-    "rollup-plugin-auto-entry": ">=1.0.4",
+    "rollup-plugin-auto-entry": ">=1.0.5",
     "rollup-plugin-sourcemaps": "^0.6.3",
     "@rollup/plugin-commonjs": "^21.0.1",
     "@rollup/plugin-json": "^4.1.0",

@@ -14,7 +14,7 @@
           "options": {
             "tsConfig": "packages/sample-lib/tsconfig.lib.json",
             "project": "packages/sample-lib/ng-package.json",
-            "entries": ["**/index.js"]
+            "entries": ["**/index.mjs"]
           }
         }
       }

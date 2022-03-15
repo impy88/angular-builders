@@ -110,7 +110,7 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       path.basename(ngEntryPoint.destinationFiles.fesm2015)
     );
 
-    const content = `export * from '${pathToNewEntry.replace("\\", "/")}';`;
+    const content = `export * from '${pathToNewEntry.replace(/\\/g, "/")}';`;
     await fs.writeFile(entry.data.destinationFiles.fesm2015, content);
 
     spinner.succeed();

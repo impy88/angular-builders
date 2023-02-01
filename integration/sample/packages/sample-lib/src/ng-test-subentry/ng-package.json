@@ -1,6 +1,0 @@
-{
-  "dest": "./",
-  "lib": {
-    "entryFile": "index.ts"
-  }
-}

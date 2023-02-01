@@ -2,16 +2,16 @@
   "name": "lib-sample",
   "version": "0.0.0",
   "scripts": {
-    "build": "ng build sample-lib"
+    "build": "rm -rf dist/ && ng build sample-lib"
   },
   "devDependencies": {
-    "@angular/compiler": "^12.0.0",
-    "@angular/compiler-cli": "^12.0.0",
-    "@angular/cli": "~12.0.0",
-    "@angular/core": "~12.0.0",
-    "custom-angular-builders": "^12.0.0",
-    "ng-packagr": "^12.0.2",
-    "tslib": "^2.0.0",
-    "typescript": "~4.2.3"
+    "@angular/compiler": "^15.1.0",
+    "@angular/compiler-cli": "^15.1.0",
+    "@angular/cli": "~15.1.0",
+    "@angular/core": "~15.1.0",
+    "custom-angular-builders": "file:../../dist/index",
+    "ng-packagr": "^15.1.0",
+    "tslib": "^2.5.0",
+    "typescript": "~4.9.0"
   }
 }

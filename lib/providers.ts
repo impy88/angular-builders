@@ -63,6 +63,7 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         // @ts-ignore
         autoEntry({
           include: options.entries,
+          scope: entry.data.destinationFiles.directory,
         }),
         // @ts-ignore
         rollupJson(),
@@ -92,26 +93,13 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       cache.rollupFESM2015Cache = bundle.cache;
     }
 
-    bundle.write({
+    await bundle.write({
       name: ngEntryPoint.moduleId,
-      dir: ngEntryPoint.destinationPath,
+      file: ngEntryPoint.destinationFiles.fesm2015,
       banner: '',
       format: 'es',
       sourcemap: true
     });
-
-    const pathToNewEntry = path.join(
-      // Relative path to a new entry
-      path.relative(
-        path.dirname(ngEntryPoint.destinationFiles.fesm2015),
-        ngEntryPoint.destinationPath
-      ),
-      // Filename to remap
-      path.basename(ngEntryPoint.destinationFiles.fesm2015)
-    );
-
-    const content = `export * from '${pathToNewEntry.replace(/\\/g, "/")}';`;
-    await fs.writeFile(entry.data.destinationFiles.fesm2015, content);
 
     spinner.succeed();
 
@@ -135,6 +123,7 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         // @ts-ignore
         autoEntry({
           include: options.entries,
+          scope: entry.data.destinationFiles.directory,
         }),
         // @ts-ignore
         rollupJson(),
@@ -164,27 +153,18 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
       cache.rollupFESM2020Cache = bundle.cache;
     }
 
-    bundle.write({
+    const { output } = await bundle.write({
       name: ngEntryPoint.moduleId,
-      dir: ngEntryPoint.destinationPath,
+      file: ngEntryPoint.destinationFiles.fesm2020,
       banner: '',
       format: 'es',
       sourcemap: true
     });
-
-    const pathToNewEntry = path.join(
-      // Relative path to a new entry
-      path.relative(
-        path.dirname(ngEntryPoint.destinationFiles.fesm2020),
-        ngEntryPoint.destinationPath
-      ),
-      // Filename to remap
-      path.basename(ngEntryPoint.destinationFiles.fesm2020)
-    );
-
-    const content = `export * from '${pathToNewEntry.replace(/\\/g, "/")}';`;
-    await fs.writeFile(entry.data.destinationFiles.fesm2020, content);
-
+    // console.log('output', JSON.stringify(output, null, '\t'));
+    // const emittedFiles = output.filter(o => o.type === 'chunk' && o.facadeModuleId)
+    // const content = `export * from './${emittedFiles[0].fileName}';`;
+    // await fs.writeFile(entry.data.destinationFiles.fesm2020, content);
+    output; fs;
     spinner.succeed();
 
     await bundle.close()
@@ -196,6 +176,8 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
 });
 
 function isExternalDependency(moduleId: string): boolean {
+  if (!moduleId) { return false; }
+
   // more information about why we don't check for 'node_modules' path
   // https://github.com/rollup/rollup-plugin-node-resolve/issues/110#issuecomment-350353632
   if (path.isAbsolute(moduleId) || moduleId.startsWith('.') || moduleId.startsWith('/')) {

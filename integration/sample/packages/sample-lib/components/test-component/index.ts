@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { sumAndMul } from '../../helpers';
 
 @Component({
   selector: 'lib-sample-lib',
@@ -17,5 +18,6 @@ export class LibSampleComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    sumAndMul(1, 2);
   }
 }

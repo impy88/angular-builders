@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "15.1.0",
+  "version": "15.1.1",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -14,38 +14,33 @@
     "url": "https://github.com/impy88/angular-builders.git"
   },
   "homepage": "https://github.com/impy88/angular-builders#readme",
-
   "scripts": {
     "build": "npm run build:schema && tsc -p tsconfig.json",
     "build:schema": "json2ts lib/schema.json -o ./lib/schema.ts",
     "prebuild": "rimraf dist"
   },
   "builders": "builders.json",
-
   "peerDependencies": {
     "@angular-devkit/architect": ">=0.1500.0",
     "@angular-devkit/core": "^15.0.0",
     "ng-packagr": ">=15",
     "rxjs": ">=7"
   },
-
   "dependencies": {
-    "rollup-plugin-auto-entry": ">=2.0.0",
-    "rollup-plugin-sourcemaps": "^0.6.3",
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
+    "fast-glob": "^3.2.12",
     "injection-js": "^2.4.0",
-    "ora": "~5.4.0"
+    "ora": "~5.4.0",
+    "rollup-plugin-auto-entry": ">=2.0.1"
   },
-
   "files": [
     "dist",
     "README.md",
     "LICENSE",
     "builders.json"
   ],
-
   "devDependencies": {
     "@angular-devkit/architect": "~0.1501.0",
     "@angular-devkit/core": "~15.1.0",
@@ -53,8 +48,8 @@
     "@angular/compiler-cli": "~15.1.0",
     "json-schema-to-typescript": "^11.0.0",
     "ng-packagr": "^15.1.0",
-    "rollup": "^3.0.0",
     "rimraf": "^4.1.2",
+    "rollup": "^3.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.5.0",
     "typescript": "~4.9.5"

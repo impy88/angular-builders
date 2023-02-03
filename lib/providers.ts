@@ -12,13 +12,13 @@ import { pipe } from 'rxjs';
 
 import { rollup } from 'rollup'
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import sourcemaps from 'rollup-plugin-sourcemaps';
 import commonJs from '@rollup/plugin-commonjs';
 import rollupJson from '@rollup/plugin-json';
 import autoEntry from 'rollup-plugin-auto-entry';
 
 import { NgPackagrBuilderOptions } from './schema';
 
+const EMPTY = '';
 const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transformFromPromise(async graph => {
   if (!options.entries || !options.entries.length) {
     return;
@@ -63,14 +63,12 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         // @ts-ignore
         autoEntry({
           include: options.entries,
-          scope: entry.data.destinationFiles.directory,
+          scope: entry.data.destinationFiles.directory || EMPTY,
         }),
         // @ts-ignore
         rollupJson(),
         // @ts-ignore
         commonJs(),
-        // @ts-ignore
-        sourcemaps(),
 
       ],
       inlineDynamicImports: false,
@@ -123,14 +121,13 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         // @ts-ignore
         autoEntry({
           include: options.entries,
-          scope: entry.data.destinationFiles.directory,
+          scope: entry.data.destinationFiles.directory || EMPTY,
         }),
         // @ts-ignore
         rollupJson(),
         // @ts-ignore
         commonJs(),
-        // @ts-ignore
-        sourcemaps(),
+
 
       ],
       onwarn: warning => {

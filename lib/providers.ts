@@ -1,6 +1,5 @@
 import { default as ora } from 'ora';
 
-import { promises as fs } from 'fs';
 import * as path from 'path';
 import { WRITE_BUNDLES_TRANSFORM_TOKEN } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.di';
 import { writeBundlesTransform } from 'ng-packagr/lib/ng-package/entry-point/write-bundles.transform';
@@ -47,16 +46,16 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
   const entry: EntryPointNode = graph.find(isEntryPointInProgress());
   const cache = entry.cache;
   const { entryPoint: ngEntryPoint } = entry.data;
-  const { esm2020 } = ngEntryPoint.destinationFiles;
+  const { esm2022 } = ngEntryPoint.destinationFiles;
 
   try {
-    spinner.start('Reshuffling FESM2015');
+    spinner.start('Reshuffling FESM2022');
 
     const bundle = await rollup({
       context: 'this',
-      input: esm2020,
+      input: esm2022,
       external: moduleId => isExternalDependency(moduleId),
-      cache: cache.rollupFESM2015Cache,
+      cache: cache.rollupFESM2022Cache,
       plugins: [
         // @ts-ignore
         nodeResolve(),
@@ -88,12 +87,12 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
     })
 
     if (options.watch) {
-      cache.rollupFESM2015Cache = bundle.cache;
+      cache.rollupFESM2022Cache = bundle.cache;
     }
 
     await bundle.write({
       name: ngEntryPoint.moduleId,
-      file: ngEntryPoint.destinationFiles.fesm2015,
+      file: ngEntryPoint.destinationFiles.fesm2022,
       banner: '',
       format: 'es',
       sourcemap: true
@@ -107,68 +106,6 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
     throw error;
   }
 
-  try {
-    spinner.start('Reshuffling FESM2020');
-
-    const bundle = await rollup({
-      context: 'this',
-      input: esm2020,
-      external: moduleId => isExternalDependency(moduleId),
-      cache: cache.rollupFESM2020Cache,
-      plugins: [
-        // @ts-ignore
-        nodeResolve(),
-        // @ts-ignore
-        autoEntry({
-          include: options.entries,
-          scope: entry.data.destinationFiles.directory || EMPTY,
-        }),
-        // @ts-ignore
-        rollupJson(),
-        // @ts-ignore
-        commonJs(),
-
-
-      ],
-      onwarn: warning => {
-        switch (warning.code) {
-          case 'UNUSED_EXTERNAL_IMPORT':
-          case 'THIS_IS_UNDEFINED':
-            break;
-
-          default:
-            log.warn(warning.message);
-            break;
-        }
-      },
-      inlineDynamicImports: false,
-      preserveSymlinks: true,
-      treeshake: false,
-    })
-
-    if (options.watch) {
-      cache.rollupFESM2020Cache = bundle.cache;
-    }
-
-    const { output } = await bundle.write({
-      name: ngEntryPoint.moduleId,
-      file: ngEntryPoint.destinationFiles.fesm2020,
-      banner: '',
-      format: 'es',
-      sourcemap: true
-    });
-    // console.log('output', JSON.stringify(output, null, '\t'));
-    // const emittedFiles = output.filter(o => o.type === 'chunk' && o.facadeModuleId)
-    // const content = `export * from './${emittedFiles[0].fileName}';`;
-    // await fs.writeFile(entry.data.destinationFiles.fesm2020, content);
-    output; fs;
-    spinner.succeed();
-
-    await bundle.close()
-  } catch (error) {
-    spinner.fail();
-    throw error;
-  }
 
 });
 

@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "15.1.1",
+  "version": "16.1.0",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -21,16 +21,16 @@
   },
   "builders": "builders.json",
   "peerDependencies": {
-    "@angular-devkit/architect": ">=0.1500.0",
-    "@angular-devkit/core": "^15.0.0",
-    "ng-packagr": ">=15",
+    "@angular-devkit/architect": ">=0.1610.0",
+    "@angular-devkit/core": "^16.1.0",
+    "ng-packagr": ">=16",
     "rxjs": ">=7"
   },
   "dependencies": {
-    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "fast-glob": "^3.2.12",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "fast-glob": "^3.3.0",
     "injection-js": "^2.4.0",
     "ora": "~5.4.0",
     "rollup-plugin-auto-entry": ">=2.0.1"
@@ -42,16 +42,19 @@
     "builders.json"
   ],
   "devDependencies": {
-    "@angular-devkit/architect": "~0.1501.0",
-    "@angular-devkit/core": "~15.1.0",
-    "@angular/compiler": "~15.1.0",
-    "@angular/compiler-cli": "~15.1.0",
-    "json-schema-to-typescript": "^11.0.0",
-    "ng-packagr": "^15.1.0",
-    "rimraf": "^4.1.2",
-    "rollup": "^3.0.0",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.5.0",
-    "typescript": "~4.9.5"
+    "@angular-devkit/architect": "~0.1601.5",
+    "@angular-devkit/core": "~16.1.0",
+    "@angular/compiler": "~16.1.0",
+    "@angular/compiler-cli": "~16.1.0",
+    "json-schema-to-typescript": "^13.0.0",
+    "ng-packagr": "^16.1.0",
+    "rimraf": "^5.0.1",
+    "rollup": "3.13.0",
+    "rxjs": "7.8.1",
+    "tslib": "^2.6.0",
+    "typescript": "~5.1.6"
+  },
+  "resolutions": {
+    "rxjs": "7.8.1"
   }
 }

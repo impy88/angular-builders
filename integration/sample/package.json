@@ -5,14 +5,14 @@
     "build": "rimraf dist/ && ng build sample-lib"
   },
   "devDependencies": {
-    "@angular/compiler": "^15.1.0",
-    "@angular/compiler-cli": "^15.1.0",
-    "@angular/cli": "~15.1.0",
-    "@angular/core": "~15.1.0",
+    "@angular/compiler": "^16.1.0",
+    "@angular/compiler-cli": "^16.1.0",
+    "@angular/cli": "~16.1.0",
+    "@angular/core": "~16.1.0",
     "custom-angular-builders": "file:../../",
-    "ng-packagr": "^15.1.0",
-    "rimraf": "^4.1.2",
+    "ng-packagr": "^16.1.0",
+    "rimraf": "^5.0.1",
     "tslib": "^2.5.0",
-    "typescript": "~4.9.0"
+    "typescript": "~5.1.6"
   }
 }

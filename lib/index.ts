@@ -1,7 +1,7 @@
 import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/architect';
 import { resolve } from 'path';
 import { Observable, from } from 'rxjs';
-import { mapTo, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { NgPackagrBuilderOptions } from './schema';
 import { providers } from './providers';
 
@@ -34,7 +34,7 @@ export function execute(
 ): Observable<BuilderOutput> {
   return from(initialize(options, context.workspaceRoot)).pipe(
     switchMap((packager) => (options.watch ? packager.watch() : packager.build())),
-    mapTo({ success: true }),
+    map((): BuilderOutput => ({ success: true })),
   );
 }
 

@@ -21,7 +21,7 @@
   },
   "builders": "builders.json",
   "peerDependencies": {
-    "@angular-devkit/architect": ">=0.1610.0",
+    "@angular-devkit/architect": ">=0.1601.0",
     "@angular-devkit/core": "^16.1.0",
     "ng-packagr": ">=16",
     "rxjs": ">=7"

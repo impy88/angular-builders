@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "16.1.0",
+  "version": "16.1.2",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",

@@ -70,7 +70,6 @@ const overlayTranform = (options: NgPackagrBuilderOptions): Transform => transfo
         commonJs(),
 
       ],
-      inlineDynamicImports: false,
       preserveSymlinks: true,
       treeshake: false,
       onwarn: warning => {

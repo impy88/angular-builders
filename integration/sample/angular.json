@@ -19,5 +19,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "custom-angular-builders",
-  "version": "17.3.0",
+  "version": "18.2.1",
   "description": "Wrapper for ngPackagr with FESM entry-point autodiscovery",
   "main": "dist/builder.js",
   "module": "dist/builder.js",
@@ -21,16 +21,16 @@
   },
   "builders": "builders.json",
   "peerDependencies": {
-    "@angular-devkit/architect": ">=0.1703.0",
-    "@angular-devkit/core": "^17.3",
-    "ng-packagr": ">=17",
+    "@angular-devkit/architect": ">=0.1802.0",
+    "@angular-devkit/core": "^18.2",
+    "ng-packagr": ">=18.2",
     "rxjs": ">=7"
   },
   "dependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.2.0",
-    "fast-glob": "^3.3.0",
+    "fast-glob": "^3.3.2",
     "injection-js": "^2.4.0",
     "ora": "~5.4.0",
     "rollup-plugin-auto-entry": ">=2.0.2"
@@ -42,18 +42,18 @@
     "builders.json"
   ],
   "devDependencies": {
-    "@angular-devkit/architect": "~0.1703.6",
-    "@angular-devkit/core": "~17.3.0",
-    "@angular/compiler": "~17.3.0",
-    "@angular/compiler-cli": "~17.3.0",
-    "@types/node": "^20.12.8",
+    "@angular-devkit/architect": "~0.1802.0",
+    "@angular-devkit/core": "~18.2.1",
+    "@angular/compiler": "~18.2.1",
+    "@angular/compiler-cli": "~18.2.1",
+    "@types/node": "^22.5.0",
     "json-schema-to-typescript": "^14.0.0",
-    "ng-packagr": "^17.3.0",
+    "ng-packagr": "^18.2.1",
     "rimraf": "^5.0.1",
     "rollup": "4.17.2",
     "rxjs": "7.8.1",
     "tslib": "^2.6.0",
-    "typescript": "~5.4.5"
+    "typescript": "~5.5.4"
   },
   "resolutions": {
     "rxjs": "7.8.1"
